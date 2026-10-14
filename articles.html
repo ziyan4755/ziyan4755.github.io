@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全部档案 — OFF-WORLD_LOG</title>
+  <meta name="description" content="OFF-WORLD_LOG 的全部文章档案，按时间倒序排列。">
+  <meta name="theme-color" content="#0d0d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0d0f'/%3E%3Cpath d='M16 5 27 16 16 27 5 16 Z' fill='%23ff8c00'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="articles">
+
+  <header id="site-nav"></header>
+
+  <main class="wrap page">
+    <section>
+      <p class="eyebrow reveal">// ARCHIVE</p>
+      <h1 class="page-title glitch reveal" data-text="ALL_LOGS">ALL_LOGS</h1>
+      <p class="hero-desc reveal">全部档案，按时间倒序排列。输入关键词可以过滤标题与标签。</p>
+
+      <!-- 终端式过滤器:输入即过滤,无需回车 -->
+      <div class="filter reveal">
+        <span class="prompt">&gt;</span>
+        <input id="filter-input" type="text" placeholder="输入关键词过滤档案…" autocomplete="off">
+      </div>
+      <p class="count-line reveal" id="count-line">// LOADING…</p>
+
+      <div id="all-posts" class="log-list"><!-- 由 JS 渲染 --></div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/markdown.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script>
+    /* ---- 档案页逻辑:读取全部文章 + 关键词过滤 ---- */
+    (() => {
+      const list  = document.getElementById('all-posts');
+      const count = document.getElementById('count-line');
+      const input = document.getElementById('filter-input');
+      let posts = [];
+
+      function draw() {
+        const q = input.value.trim().toLowerCase();
+        const hits = posts.filter(p =>
+          !q ||
+          (p.title || '').toLowerCase().includes(q) ||
+          (p.excerpt || '').toLowerCase().includes(q) ||
+          (p.tags || []).some(t => t.toLowerCase().includes(q))
+        );
+        count.textContent = q
+          ? `// ${hits.length} MATCH${hits.length === 1 ? '' : 'ES'} FOR "${input.value.trim()}"`
+          : `// ${hits.length} ENTRIES`;
+        Blog.renderPostList(list, hits);
+      }
+
+      input.addEventListener('input', draw);
+      Blog.loadPosts()
+        .then(p => { posts = p; draw(); })
+        .catch(() => {
+          count.textContent = '// SIGNAL ERROR';
+          list.innerHTML = '<div class="empty">// 档案读取失败(请通过 HTTP 访问本页)<span class="blink">_</span></div>';
+        });
+    })();
+  </script>
+</body>
+</html>

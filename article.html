@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRANSMISSION — OFF-WORLD_LOG</title>
+  <meta name="description" content="OFF-WORLD_LOG 的文章阅读页。">
+  <meta name="theme-color" content="#0d0d0f">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0d0f'/%3E%3Cpath d='M16 5 27 16 16 27 5 16 Z' fill='%23ff8c00'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<!-- 阅读页属于 LOGS 板块,导航高亮 LOGS -->
+<body data-page="articles">
+
+  <!-- 阅读进度条(JS 按滚动位置更新宽度) -->
+  <div class="progress" id="progress"></div>
+
+  <header id="site-nav"></header>
+
+  <main class="wrap page">
+    <!-- 文章内容由 core.js 的 renderArticle() 根据 ?slug= 参数渲染 -->
+    <div id="article">
+      <p class="empty">&gt; 正在接收信号<span class="blink">_</span></p>
+    </div>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/markdown.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script>Blog.renderArticle();</script>
+</body>
+</html>

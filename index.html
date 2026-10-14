@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OFF-WORLD_LOG — 离岸世界的个人档案库</title>
+  <meta name="description" content="一个《银翼杀手2049》风格的个人博客：日志、项目与自白。纯静态，零依赖。">
+  <meta name="theme-color" content="#0d0d0f">
+  <!-- 站点图标:内联 SVG 数据(黑色方块 + 琥珀菱形),无需额外文件 -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0d0f'/%3E%3Cpath d='M16 5 27 16 16 27 5 16 Z' fill='%23ff8c00'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="index">
+
+  <!-- 开机动画遮罩(台词由 core.js 逐行打印,然后自动淡出) -->
+  <div class="boot" id="boot"><pre class="boot-lines" id="boot-lines"></pre></div>
+
+  <!-- 导航由 core.js 统一注入,这里留挂载点即可 -->
+  <header id="site-nav"></header>
+
+  <main class="wrap page">
+    <!-- ============ 英雄区:网站介绍 ============ -->
+    <section class="hero">
+      <p class="eyebrow reveal">// OFF-WORLD ARCHIVE — NODE 07</p>
+      <h1 class="page-title glitch reveal" data-text="OFF-WORLD_LOG">OFF-WORLD_LOG</h1>
+      <!-- 打字机标语:文字由下方内联脚本循环打印 -->
+      <p class="hero-tagline reveal" id="tagline"></p>
+      <p class="hero-desc reveal">
+        这里是「离岸世界」的档案库：一些日志、几个项目、一段自我介绍。
+        没有推荐算法，没有点赞按钮——只有文字，和一条稳定的信号。
+      </p>
+      <div class="hero-status reveal">
+        <span class="chip"><span class="live"></span>SIGNAL: NOMINAL</span>
+        <span class="chip">MODE: STATIC</span>
+        <span class="chip">DEPLOY: GITHUB_PAGES</span>
+      </div>
+    </section>
+
+    <!-- ============ 最新 3 篇文章(JS 自动读取 posts.json) ============ -->
+    <section class="block">
+      <div class="block-head reveal">
+        <h2 class="block-title">LATEST TRANSMISSIONS</h2>
+        <a class="more-link" href="articles.html">全部档案 →</a>
+      </div>
+      <div id="latest" class="log-list"><!-- 由 JS 渲染 --></div>
+    </section>
+  </main>
+
+  <!-- 页脚由 core.js 统一注入 -->
+  <footer id="site-footer"></footer>
+
+  <script src="assets/js/markdown.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script>
+    /* ---- 首页逻辑:打字机标语 + 最新 3 篇文章 ---- */
+    (() => {
+      /* 打字机标语:想换台词只改这个数组 */
+      const PHRASES = [
+        'WAKE UP, TIME TO BLOG.',
+        '在数据风暴里，记录真实信号。',
+        'MORE HUMAN THAN HUMAN.',
+        '静默是最大的噪声，所以我写作。'
+      ];
+      const el = document.getElementById('tagline');
+      let pi = 0, ci = 0, deleting = false;
+      (function step() {
+        const t = PHRASES[pi];
+        el.textContent = t.slice(0, ci);
+        let delay;
+        if (!deleting && ci < t.length)      { ci++;              delay = 70; }
+        else if (!deleting)                  { deleting = true;   delay = 2000; }
+        else if (ci > 0)                     { ci--;              delay = 26; }
+        else                                 { deleting = false;  pi = (pi + 1) % PHRASES.length; delay = 420; }
+        setTimeout(step, delay);
+      })();
+
+      /* 最新 3 篇文章 */
+      Blog.loadPosts()
+        .then(list => Blog.renderPostList(document.getElementById('latest'), list.slice(0, 3)))
+        .catch(() => {
+          document.getElementById('latest').innerHTML =
+            '<div class="empty">// SIGNAL ERROR — 档案读取失败(请通过 HTTP 访问本页,不要直接用 file:// 打开)<span class="blink">_</span></div>';
+        });
+    })();
+  </script>
+</body>
+</html>
