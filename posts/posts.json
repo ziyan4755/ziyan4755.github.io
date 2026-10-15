@@ -1,12 +1,5 @@
 [
   {
-    "title": "BASELINE：我的第一篇档案",
-    "date": "2025-03-09",
-    "file": "2025-03-09-baseline.md",
-    "excerpt": "为什么要在 2049 年手写一个纯静态博客：没有框架、没有构建，只有 HTML、CSS 和一点点 JavaScript。",
-    "tags": ["随笔", "建站"]
-  },
-  {
     "title": "霓虹雨备忘：这套配色的设计笔记",
     "date": "2025-02-14",
     "file": "2025-02-14-neon-rain.md",
@@ -19,5 +12,12 @@
     "file": "2025-01-02-hello-offworld.md",
     "excerpt": "OFF-WORLD_LOG 的第一条传输。我是谁、这里会写什么，以及为什么叫「离岸世界」。",
     "tags": ["随笔"]
+  },
+  {
+    "title":"BASELINE：我的第一篇档案",
+    "date":"2026-10-15",
+    "file":"2026-10-15-Hello-offWorld.md",
+    "excerpt":"Off-World的第一条信息传输，博客介绍",
+    "tags":["随笔"]
   }
 ]
